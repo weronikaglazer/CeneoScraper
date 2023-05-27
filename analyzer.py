@@ -20,9 +20,14 @@ stats =  {
 print(f"""Dla produktu o kodzie {product_code}
 pobranych zostało {stats['opinions_count']} opinii/opinie.
 Dla {stats['pros_count']} opinii podana została lista zalet produktu,
-a dla {stats['cons_count']} opinii podała została lista jego wad.
+a dla {stats['cons_count']} opinii podała została lista jego wad. Łącznie {stats['recommended_count']} osób poleca ten produkt.
 Średnia ocena produktu wynosi {stats['average_score']:.2f}""")
+      
 
 stars = opinions.score.value_counts().reindex(list(np.arange(0,5.5,0.5)), fill_value=0)
 stars.plot.bar()
-plt.show()
+plt.savefig(f"./plots/{product_code}_stars.png")
+
+recommendations = opinions.recommendation.value_counts(dropna=False)
+recommendations.plot.pie(label="", autopct="%1.1f%%")
+plt.savefig(f"./plots/{product_code}_recommendations.png")
